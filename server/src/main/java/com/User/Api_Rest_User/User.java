@@ -1,6 +1,13 @@
 package com.User.Api_Rest_User;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,7 +25,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users")	
-public class User implements Serializable{
+public class User implements UserDetails, Serializable{
+	
 
 	  private static final long serialVersionUID = 1L;
 	  
@@ -26,7 +34,9 @@ public class User implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long id;
-	@Column
+	@Column(unique = true)
+	String login;
+	@Column(unique = true)
 	String name;
 	@Column
 	String address;
@@ -34,5 +44,49 @@ public class User implements Serializable{
 	String phone;
 	@Column
 	String password;
+	@Override
+	
+	
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+	
+	}
+	@Override
+	public String getPassword() {
+		// TODO Auto-generated method stub
+		return password;
+	}
+	@Override
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		return login;
+	}
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	public Object getId() {
+		// TODO Auto-generated method stub
+		return id;
+	}
+
 	
 }
